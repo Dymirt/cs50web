@@ -8,12 +8,18 @@
       <div class="card-footer">
           <div class=row>
               <div class="col">
-
-                  <i id='like-button-{{ post.id }}' class="bi bi-heart" onclick='put_like({{ post.id }})'>
-                      {% with likes=post.liked.count %}
-                      {{ likes }} Like{{ likes|pluralize }}
-                      {% endwith %}
+                  {% with likes=post.liked.count %}
+                  <i id='like-button-{{ post.id }}'
+                  {% if user in post.liked.all %}
+                     class="bi bi-heart-fill"
+                  {% else %}
+                     class="bi bi-heart"
+                  {% endif %}
+                    onclick='put_like({{ post.id }})'>
+                      {{ likes }}
                   </i>
+                  Like{{ likes|pluralize }}
+                  {% endwith %}
               </div>
           {% if user == post.author %}
           <div class='text-end col'>

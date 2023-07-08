@@ -96,8 +96,7 @@ def put_like(request, post_id):
             else:
                 post.liked.add(request.user)
             post.save()
-            print(post.liked.all())
-            return HttpResponse(status=204)
+            return JsonResponse({"likes": len(post.liked.all())})
         return HttpResponseForbidden
     return HttpResponseBadRequest
 

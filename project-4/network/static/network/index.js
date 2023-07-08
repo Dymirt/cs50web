@@ -14,7 +14,7 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function put_like(post_id) {
+async function put_like(post_id) {
    var heart = document.getElementById(`like-button-${post_id}`)
     if ("bi-heart" in heart.classList) {
     heart.classList.toggle("bi-heart");
@@ -24,11 +24,10 @@ function put_like(post_id) {
     heart.classList.toggle("bi-heart");
     }
 
-
-    fetch(`post/${post_id}/put_like`, {
-    method: 'PUT',
-    headers: { "X-CSRFToken": getCookie('csrftoken') }
+    const response = await fetch(`post/${post_id}/put_like`, {
+        method: 'PUT',
+        headers: { "X-CSRFToken": getCookie('csrftoken') }
     });
-
-    console.log(heart.innerHTML)
+    const likes = await response.json();
+    heart.innerHTML = likes.likes;
 }
