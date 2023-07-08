@@ -1,0 +1,14 @@
+textarea {
+    min-height: 400px;
+}
+
+.em {
+    display: grid;
+    grid-template-columns: 4fr 5fr 3fr 1fr;
+    border: 1px solid black;
+    margin-bottom: .5rem;
+    background-color: gray;
+    padding-left: 0.5rem;
+}
+.em *{
+}

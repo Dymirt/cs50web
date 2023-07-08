@@ -1,0 +1,22 @@
+{% extends "encyclopedia/layout.html" %}
+{% load markdownify %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block body %}
+    <div>
+        {% if content %}
+            {{ content | markdownify }}
+        <form method="get" action="{% url 'edit' title%}">
+            {% csrf_token %}
+            <input type="hidden" value="{{title}}" name="title">
+            <input type="submit" value="Edit">
+        </form>
+        {% else %}
+        <p style="color:red">Requested page "{{ title }}" was not found</p>
+        {% endif %}
+    </div>
+
+{% endblock %}

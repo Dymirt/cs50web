@@ -1,0 +1,33 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block body %}
+<style>
+    #edit {
+        display:grid;
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        padding-right: 2rem;
+    }
+
+    #edit textarea {
+        width: 100%;
+        background-color: #f0f0f0;
+        height: 50vh;
+    }
+
+    #edit input[type="submit"] {
+        margin-top: 1rem;
+        justify-self: right;
+    }
+    </style>
+<h1>{{page_h1}}</h1>
+<form id="edit" method="post" action="{% url 'edit' title %}">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Save Changes">
+</form>
+{% endblock %}

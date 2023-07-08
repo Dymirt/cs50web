@@ -1,0 +1,55 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block body %}
+
+<h1>{{page_h1}}</h1>
+
+{% if error %}
+<style>
+    #error {
+    border:solid 1px;
+    width: max-content;
+    padding: 0.5rem;
+    color:red;
+    }
+</style>
+<p id="error" style="color:red;">{{ error }}</p>
+{% endif %}
+
+<div>
+    <style>
+        #create {
+        display:grid;
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        padding-right: 2rem;
+        }
+
+
+        #create input{
+        background-color: #f0f0f0;
+
+        }
+
+        #create textarea{
+        width: 100%;
+        background-color: #f0f0f0;
+        height: 50vh;
+        }
+        #create input[type="submit"]{
+        margin-top: 1rem;
+        justify-self: right;
+        }
+    </style>
+    <form id="create" method="post" action="{% url 'create' %}">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Create">
+    </form>
+</div>
+
+{% endblock %}

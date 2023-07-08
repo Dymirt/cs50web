@@ -1,0 +1,21 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ page_h1 }}</h1>
+
+    {% if entries %}
+        <ul>
+                {% for entry in entries %}
+                <li><a href="{% url 'title' entry %}">{{ entry }}</a></li>
+                {% endfor %}
+        </ul>
+    {% else %}
+        <h6>NOTHING FOUND</h6>
+        <p>Sorry, but nothing matched your search terms. Please try again with some different keywords.</p>
+    {% endif %}
+
+{% endblock %}

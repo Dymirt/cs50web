@@ -1,0 +1,56 @@
+{% for listing in object_list %}
+<a href="{% url 'listing' listing.id %}" style="text-decoration: none; color: inherit">
+    <div class='row listing align-items-center'>
+            <div class="col-3" style="height:inherit; padding: 0">
+                <img src='{{ listing.image_url }}'>
+            </div>
+            <div class="col">
+                <div class='row'>
+                    <div class="col">
+                        <h3 style=>{{ listing.title }}</h3>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class="col">
+                        <p class='description'>{{ listing.description }}</p>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class="col">
+                        <p>Seller: {{ listing.user }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class='row'>
+                    <div class='col'>
+                        {% if listing.bids.all %}
+                            <p class='price'>{{ listing.highest_bid.bid }}$</p>
+                        {% else %}
+                            <p class='price'>{{ listing.starting_bid }}$</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col'>
+                        {% if listing.is_active %}
+                            {% if listing.bids.all %}
+                                <p class="bid listing_label">{{ listing.bids.count }} bid(s) so far.</p>
+                            {% else %}
+                                <p class="no_bid listing_label">No bids yet</p>
+                            {% endif %}
+                        {% else %}
+                            <p class="sold listing_label">Sold</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col date'>
+                        <time  datetime="{{ listing.date }}">Created {{ listing.date }}</time>
+                    </div>
+                </div>
+            </div>
+    </div>
+</a>
+
+{% endfor %}
