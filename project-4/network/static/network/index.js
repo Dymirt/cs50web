@@ -29,5 +29,5 @@ async function put_like(post_id) {
         headers: { "X-CSRFToken": getCookie('csrftoken') }
     });
     const likes = await response.json();
-    heart.innerHTML = likes.likes;
+    heart.innerHTML = ` ${likes.likes}`;
 }
