@@ -91,9 +91,11 @@ class FollowingPostsListView(PostsListView):
 
 
 class UserPostsListView(PostsListView):
+    title = "Profile"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = User.objects.get(username=self.kwargs['user_name'])
+        context["profile"] = User.objects.get(username=self.kwargs['user_name'])
         return context
 
     def get_queryset(self):
@@ -101,18 +103,37 @@ class UserPostsListView(PostsListView):
         return queryset
 
 
-def put_like(request, post_id):
+def like(request, post_id):
     if request.method == "PUT":
         if request.user.is_authenticated:
             post = Post.objects.get(pk=post_id)
-            if request.user in post.liked.all():
-                post.liked.remove(request.user)
-            else:
+            if request.user not in post.liked.all():
                 post.liked.add(request.user)
+            else:
+                post.liked.remove(request.user)
             post.save()
             return JsonResponse({"likes": len(post.liked.all())})
         return HttpResponseForbidden
     return HttpResponseBadRequest
+
+
+def follow(request, user_name):
+    if request.method == "PUT":
+        if request.user.is_authenticated:
+            influencer = User.objects.get(username=user_name)
+            if influencer not in request.user.influencers.all():
+                request.user.influencers.add(influencer)
+            else:
+                request.user.influencers.remove(influencer)
+            request.user.save()
+            return JsonResponse({"followers": len(influencer.subscribers.all())})
+        return HttpResponseForbidden
+    return HttpResponseBadRequest
+
+
+
+
+
 
 
 

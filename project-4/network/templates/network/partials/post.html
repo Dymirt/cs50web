@@ -15,7 +15,7 @@
                   {% else %}
                      class="bi bi-heart"
                   {% endif %}
-                    onclick='put_like({{ post.id }})'>
+                    onclick='like({{ post.id }})'>
                       {{ likes }}
                   </i>
                   Like{{ likes|pluralize }}
