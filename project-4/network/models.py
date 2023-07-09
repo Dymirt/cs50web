@@ -7,6 +7,9 @@ class User(AbstractUser):
 
 
 class Post(models.Model):
+    class Meta:
+        ordering = ['-timestamp']
+
     author = models.ForeignKey('User', on_delete=models.CASCADE, related_name="posts")
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)

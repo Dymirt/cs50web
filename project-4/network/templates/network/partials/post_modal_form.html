@@ -1,0 +1,20 @@
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">{{ user.username }} - New Post</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post" action="{% url 'index' %}">
+        {% csrf_token %}
+      <div class="modal-body">
+        <textarea class="form-control" id="exampleFormControlTextarea1" name="post_content" rows="3"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Publish</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

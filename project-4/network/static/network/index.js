@@ -55,6 +55,4 @@ async function follow(username) {
     });
     const json = await response.json();
     followers_count.innerHTML = `${json.followers}`;
-
-
 }

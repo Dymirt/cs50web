@@ -80,6 +80,13 @@ class PostsListView(ListView):
         context["title"] = self.get_title()
         return context
 
+    def post(self, request, *args, **kwargs):
+        # Handle form submission
+        post = Post(author=self.request.user, content=request.POST['post_content'])
+        post.save()
+        # Return the response
+        return self.get(request, *args, **kwargs)
+
 
 class FollowingPostsListView(PostsListView):
     title = "Following"
