@@ -13,5 +13,6 @@ urlpatterns = [
     path('profile/<str:user_name>', views.UserPostsListView.as_view(), name='profile'),
     # Fatch calls
     path("post/<int:post_id>/like", login_required(views.like)),
+    path("post/<int:post_id>/edit", login_required(views.update_post)),
     path('profile/<str:user_name>/follow', login_required(views.follow)),
 ]

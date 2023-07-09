@@ -1,34 +1,36 @@
 <div id="post-{{ post.id }}" class='card'>
     <div class="card-header">
         <h5 class="card-title"><a href="{% url 'profile' post.author.username %}">{{ post.author.username }}</a></h5>
-    <small class="text-muted">{{ post.timestamp }}</small></div>
+        <small class="text-muted">{{ post.timestamp }}</small></div>
     <div class="card-body">
         <p class="card-text">{{ post.content }}</p>
     </div>
-      <div class="card-footer">
-          <div class=row>
-              <div class="col">
-                  {% with likes=post.liked.count %}
-                  <i id='like-button-{{ post.id }}'
-                  {% if user in post.liked.all %}
-                     class="bi bi-heart-fill"
-                  {% else %}
-                     class="bi bi-heart"
-                  {% endif %}
-                    onclick='like({{ post.id }})'>
-                      {{ likes }}
-                  </i>
-                  Like{{ likes|pluralize }}
-                  {% endwith %}
-              </div>
-          {% if user == post.author %}
-          <div class='text-end col'>
-          <a href="#" class="card-link">Edit</a>
-            <a href="#" class="card-link">Delete</a>
-          </div>
-          {% endif %}
+    <div class="card-footer">
 
-          </div>
-      </div>
+        <div class="row row-cols-auto justify-content-between">
+            <div class="col align-self-center">
+                {% with likes=post.liked.count %}
+                <i id='like-button-{{ post.id }}'
+                   {% if user in post.liked.all %}
+                   class="bi bi-heart-fill"
+                   {% else %}
+                   class="bi bi-heart"
+                   {% endif %}
+                   onclick='like({{ post.id }})'>
+                    {{ likes }}
+                </i>
+                Like{{ likes|pluralize }}
+                {% endwith %}
+            </div>
+
+            <div id="post-{{ post.id }}-buttons" class="col align-self-center">
+                <button type="button"
+                        class="btn btn-outline-warning btn-sm"
+                        onclick="edit_post({{ post.id }})">Edit</button>
+                <button type="button"
+                        class="btn btn-outline-danger btn-sm">Delete</button>
+            </div>
+        </div>
+    </div>
 
 </div>

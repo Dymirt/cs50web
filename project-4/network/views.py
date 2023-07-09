@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -135,9 +137,20 @@ def follow(request, user_name):
             request.user.save()
             return JsonResponse({"followers": len(influencer.subscribers.all())})
         return HttpResponseForbidden
+
+
+def update_post(request, post_id):
+    if request.method == "PUT":
+        if request.user.is_authenticated:
+            post = Post.objects.get(pk=post_id)
+            if post.author == request.user:
+                body = json.loads(request.body)
+                post.content = body.get('post_text')
+                post.save()
+                return HttpResponse(status=204)
+            return HttpResponseForbidden
+        return HttpResponseForbidden
     return HttpResponseBadRequest
-
-
 
 
 

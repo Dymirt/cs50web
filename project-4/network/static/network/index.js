@@ -56,3 +56,56 @@ async function follow(username) {
     const json = await response.json();
     followers_count.innerHTML = `${json.followers}`;
 }
+
+function edit_post(post_id){
+    var post = document.getElementById(`post-${post_id}`);
+    var cardTextElement = post.querySelector('.card-text');
+
+
+    // Adding textarea with post text
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = cardTextElement.innerHTML;
+    textarea.className = 'form-control';
+    cardTextElement.innerHTML = '';
+    cardTextElement.append(textarea);
+
+    // Changing buttons to save and cancel
+    var postButtons = document.getElementById(`post-${post_id}-buttons`);
+
+    const mainButtons = postButtons.cloneNode(true);
+
+    postButtons.innerHTML = '';
+
+    const saveButton = document.createElement('button');
+    saveButton.innerHTML = "Save";
+    saveButton.type = 'button';
+    saveButton.className = "btn btn-outline-success btn-sm";
+    saveButton.style.marginRight = '5px';
+    saveButton.onclick = function() {
+      cardTextElement.innerHTML = textarea.value;
+      postButtons.innerHTML = '';
+      postButtons.appendChild(mainButtons);
+      const response = fetch(`/post/${post_id}/edit`, {
+        method: 'PUT',
+        headers: { "X-CSRFToken": getCookie('csrftoken') },
+        body: JSON.stringify({
+            post_text: textarea.value,
+            })
+      });
+    };
+
+    postButtons.append(saveButton);
+
+    const cancelButton = document.createElement('button');
+    cancelButton.innerHTML = "Cancel";
+    cancelButton.className = "btn btn-outline-warning btn-sm";
+    cancelButton.type = 'button';
+    cancelButton.onclick = function() {
+      cardTextElement.innerHTML = textarea.innerHTML;
+      postButtons.innerHTML = '';
+      postButtons.appendChild(mainButtons);
+
+    };
+    postButtons.append(cancelButton);
+
+}
