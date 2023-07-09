@@ -20,9 +20,9 @@ The “Following” link in the navigation bar should take the user to a page wh
 - [x] On any page that displays posts, posts should only be displayed 10 on a page. If there are more than ten posts, a “Next” button should appear to take the user to the next page of posts (which should be older than the current page of posts). If not on the first page, a “Previous” button should appear to take the user to the previous page of posts as well. 
 ### Edit Post: 
 Users should be able to click an “Edit” button or link on any of their own posts to edit that post.
- - When a user clicks “Edit” for one of their own posts, the content of their post should be replaced with a textarea where the user can edit the content of their post.
- - The user should then be able to “Save” the edited post. Using JavaScript, you should be able to achieve this without requiring a reload of the entire page.
- - For security, ensure that your application is designed such that it is not possible for a user, via any route, to edit another user’s posts.
+ - [x] When a user clicks “Edit” for one of their own posts, the content of their post should be replaced with a textarea where the user can edit the content of their post.
+ - [x] The user should then be able to “Save” the edited post. Using JavaScript, you should be able to achieve this without requiring a reload of the entire page.
+ - [x] For security, ensure that your application is designed such that it is not possible for a user, via any route, to edit another user’s posts.
 ##“Like” and “Unlike”: 
 - [x] Users should be able to click a button or link on any post to toggle whether or not they “like” that post.
 - [x] Using JavaScript, you should asynchronously let the server know to update the like count (as via a call to fetch) and then update the post’s like count displayed on the page, without requiring a reload of the entire page.
