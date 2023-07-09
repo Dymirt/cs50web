@@ -9,8 +9,6 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
     path("post/<int:post_id>/put_like", views.put_like),
-    # ToDo
-    path('following', views.FollowingPostsListView.as_view(), name='following')
-    # path('profile/<str:user_name>', views.profile, name='following' )
-
+    path('following', views.FollowingPostsListView.as_view(), name='following'),
+    path('profile/<str:user_name>', views.UserPostsListView.as_view(), name='profile'),
 ]

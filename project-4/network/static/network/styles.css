@@ -1,0 +1,7 @@
+.card {
+    margin-bottom: 10px;
+}
+.card-header a {
+    text-decoration: none;
+    color: initial;
+}

@@ -1,7 +1,7 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-<h1>All Posts</h1>
+<h1>{{ title }}</h1>
     {% for post in object_list %}
         {% include 'network/partials/post.html' %}
     {% endfor %}

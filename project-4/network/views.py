@@ -1,12 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseForbidden, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseForbidden, HttpResponseBadRequest, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import ListView
-from django.db.models import Count, F, Prefetch, QuerySet
-
+from django.db.models import Count, F, Prefetch, QuerySet, Q
 
 from .models import User, Post
 
@@ -71,20 +70,35 @@ class PostsListView(ListView):
     template_name = "network/post_list.html"
     model = Post
     paginate_by = 10
+    title = "All posts"
+
+    def get_title(self):
+        return self.title
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.get_title()
+        return context
 
 
-class FollowingPostsListView(ListView):
-    template_name = "network/post_list.html"
-    model = Post
-    paginate_by = 10
+class FollowingPostsListView(PostsListView):
+    title = "Following"
 
     def get_queryset(self):
-        posts = QuerySet()
         influencers = self.request.user.influencers.all()
-        for influencer in influencers:
-            posts.add(influencer.posts.all())
-        print(posts)
-        return posts
+        queryset = Post.objects.filter(Q(author__in=influencers))
+        return queryset
+
+
+class UserPostsListView(PostsListView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = User.objects.get(username=self.kwargs['user_name'])
+        return context
+
+    def get_queryset(self):
+        queryset = Post.objects.filter(author=User.objects.get(username=self.kwargs['user_name']))
+        return queryset
 
 
 def put_like(request, post_id):

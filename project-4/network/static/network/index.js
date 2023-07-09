@@ -24,7 +24,7 @@ async function put_like(post_id) {
     heart.classList.toggle("bi-heart");
     }
 
-    const response = await fetch(`post/${post_id}/put_like`, {
+    const response = await fetch(`/post/${post_id}/put_like`, {
         method: 'PUT',
         headers: { "X-CSRFToken": getCookie('csrftoken') }
     });
