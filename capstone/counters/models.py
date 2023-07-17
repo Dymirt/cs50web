@@ -1,9 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
-
-
-# Create your models here.
 
 
 class Counter(models.Model):
@@ -31,13 +27,19 @@ class Reading(models.Model):
     def __str__(self):
         return f"{self.counter.title} {self.value} on {self.date}"
 
-    def usage_in_units(self):
-        previous_reading = self.counter.readings.filter(pk__lt=self.pk).order_by('-pk').first()
+    def get_previous_reading(self):
+        return self.counter.readings.filter(pk__lt=self.pk).order_by('-pk').first()
+
+    def usage_in_units(self) -> float:
+        previous_reading = self.get_previous_reading()
         if previous_reading:
-            return self.value - previous_reading.value
+            return self.value - float(previous_reading.value)
 
     def payment(self):
-        if self.usage_in_units():
-            total = self.usage_in_units() * self.counter.price_per_unit
-            return total if not self.counter.fixed_price else total + self.counter.fixed_price
+        if self.get_previous_reading():
+            if self.counter.consumable:
+                if self.usage_in_units():
+                    total = self.usage_in_units() * self.counter.price_per_unit
+                    return total + self.counter.fixed_price if self.counter.fixed_price else total
+            return self.counter.fixed_price
 
