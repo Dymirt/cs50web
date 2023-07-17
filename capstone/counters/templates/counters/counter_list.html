@@ -1,0 +1,15 @@
+{% extends "counters/dashboard.html" %}
+{% block data %}
+<div class="row justify-content-between">
+    <div class="col-auto shadow rounded py-3">
+        {% include 'counters/partials/counters_table.html' %}
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{% url 'counters:counter-create' %}" class='button'>
+                <button type="button" class="btn btn-primary">Add Counter</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

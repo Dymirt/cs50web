@@ -1,0 +1,32 @@
+<div class="card border-0">
+
+<div class=card-body>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Value</th>
+            <th>Usage</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for obj in object_list %}
+            <tr>
+                <td>
+                    <a href="{% url 'counters:counter-detail' obj.counter.id %}">{{ obj.counter.title }}</a>
+                </td>
+                <td>{{ obj.value }} {{ obj.counter.unit }}</td>
+                <td>{{ obj.usage_in_units }}</td>
+                <td>{{ obj.date }}</td>
+                <td>
+                    <a href="{% url 'counters:reading-edit' obj.id %}">edit</a>
+                    <a href="{% url 'counters:reading-delete' obj.id %}">delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+    </div>

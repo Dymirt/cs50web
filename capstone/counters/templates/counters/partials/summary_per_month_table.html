@@ -1,0 +1,27 @@
+<div class="card border-0">
+    <div class="card-body">
+        <h5 class="card-title">{{ object.title }}</h5>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Month</th>
+            <th>Consumption</th>
+            <th>Payment</th>
+        </tr>
+    </thead>
+    <tr>
+        {% for reading in object.readings.all %}
+            <tr>
+                <td>{{ reading.date }}:</td>
+                {% if reading.usage_in_units %}
+                    <td>{{ reading.usage_in_units|floatformat:2 }} {{ object.unit }}</td>
+                {% endif %}
+                {% if reading.payment %}
+                    <td>{{ reading.payment|floatformat:2 }} zł</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tr>
+</table>
+</div>
+        </div>

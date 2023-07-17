@@ -1,0 +1,11 @@
+{% extends "counters/dashboard.html" %}
+{% block data %}
+    <h1>{{ object.title }}</h1>
+    <p>Unit: {{ object.unit }}</p>
+    <p>Price per {{ object.unit }}: {{ object.price_per_unit }}</p>
+    <p>Price per month: {{ object.fixed_price }}</p>
+    {% with object_list=object.readings.all %}
+        {% include 'counters/partials/readings_table.html' %}
+    {% endwith %}
+    {% include 'counters/partials/summary_per_month_table.html' %}
+{% endblock %}
