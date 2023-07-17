@@ -2,9 +2,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView
 from django.views.generic import CreateView
-from counters.forms import ReadingForm, CounterForm
+from .forms import ReadingForm, CounterForm
 
-from counters.models import Counter, Reading
+from .models import Counter, Reading
 
 
 class CounterListView(ListView):
@@ -43,10 +43,14 @@ class AddCounterReading(CreateView):
 
     def form_valid(self, form):
         if form.is_valid():
-            if form.cleaned_data['counter'] in self.request.user.counters.all():
+            form_counter = form.cleaned_data['counter']
+            form_reading_date = form.cleaned_data['date']
+            if form_counter in self.request.user.counters.all():
+                if form_counter.readings.exists() and form_counter.readings.count() >= 2:
+                    latest_reading = form_counter.readings.latest('pk')
+                    if latest_reading.date.month == form_reading_date.month:
+                        latest_reading.delete()
                 return super().form_valid(form)
-            else:
-                form.add_error('counter', 'This is not your counter')  # Add a custom error message to the 'user' field
 
         return self.form_invalid(form)
 
