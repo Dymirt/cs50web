@@ -16,18 +16,25 @@
                    {% else %}
                    class="bi bi-heart"
                    {% endif %}
-                   onclick='like({{ post.id }})'>
+                   {% if user.is_authenticated %}
+                   onclick='like({{ post.id }})'
+                   {% endif %}
+                >
                     {{ likes }}
                 </i>
                 Like{{ likes|pluralize }}
                 {% endwith %}
             </div>
-
+            {% if user.is_authenticated %}
+            {% if user == post.author %}
             <div id="post-{{ post.id }}-buttons" class="col align-self-center">
                 <button type="button"
                         class="btn btn-outline-warning btn-sm"
                         onclick="edit_post({{ post.id }})">Edit</button>
             </div>
+
+            {% endif %}
+            {% endif %}
         </div>
     </div>
 
