@@ -30,16 +30,16 @@ class Reading(models.Model):
     def get_previous_reading(self):
         return self.counter.readings.filter(pk__lt=self.pk).order_by('-pk').first()
 
-    def usage_in_units(self) -> float:
+    def usage_in_units(self):
         previous_reading = self.get_previous_reading()
         if previous_reading:
-            return self.value - float(previous_reading.value)
+            return float(self.value) - float(previous_reading.value)
 
     def payment(self):
         if self.get_previous_reading():
             if self.counter.consumable:
                 if self.usage_in_units():
-                    total = self.usage_in_units() * self.counter.price_per_unit
-                    return total + self.counter.fixed_price if self.counter.fixed_price else total
+                    total = self.usage_in_units() * float(self.counter.price_per_unit)
+                    return total + float(self.counter.fixed_price) if self.counter.fixed_price else total
             return self.counter.fixed_price
 
