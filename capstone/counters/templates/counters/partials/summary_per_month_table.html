@@ -1,20 +1,26 @@
 <div class="card border-0">
     <div class="card-body">
-        <h5 class="card-title">{{ object.title }}</h5>
+        <h5 class="card-title">{{ counter.title }}</h5>
 <table class="table table-hover">
     <thead>
         <tr>
             <th>Month</th>
+            {% if counter.consumable %}
+            <th>Reading value</th>
             <th>Consumption</th>
+            {% endif %}
             <th>Payment</th>
         </tr>
     </thead>
     <tr>
-        {% for reading in object.readings.all %}
+        {% for reading in counter.readings.all %}
             <tr>
                 <td>{{ reading.date }}:</td>
-                {% if reading.usage_in_units %}
-                    <td>{{ reading.usage_in_units|floatformat:2 }} {{ object.unit }}</td>
+                {% if counter.consumable %}
+                    <td>{{ reading.value }}</td>
+                    {% if reading.usage_in_units %}
+                    <td>{{ reading.usage_in_units|floatformat:2 }} {{ counter.unit }}</td>
+                    {% endif %}
                 {% endif %}
                 {% if reading.payment %}
                     <td>{{ reading.payment|floatformat:2 }} zł</td>

@@ -2,10 +2,11 @@
 {% block data %}
 <div class="row justify-content-between">
     {% for object in object_list %}
-
+    {% with counter=object %}
     <div class="col-auto shadow rounded ">
         {% include 'counters/partials/summary_per_month_table.html' %}
     </div>
+    {% endwith %}
 
     {% endfor %}
 </div>
