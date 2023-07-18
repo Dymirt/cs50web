@@ -1,9 +1,9 @@
 from django.urls import path, reverse_lazy
 from django.views.generic import UpdateView, CreateView, DeleteView
-from counters.models import Counter, Reading
+from .models import Counter, Reading
 from django.contrib.auth.decorators import login_required
 
-from counters.views import (
+from .views import (
     CounterListView,
     ReadingListView,
     CounterDetailView,

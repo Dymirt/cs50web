@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.forms.widgets import DateInput
-from counters.models import Reading, Counter
+from .models import Reading, Counter
 
 
 class ReadingForm(ModelForm):
