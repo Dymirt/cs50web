@@ -3,7 +3,7 @@
 <div class="row justify-content-between">
     {% for object in object_list %}
     {% with counter=object %}
-    <div class="col-auto shadow rounded ">
+    <div class="col-auto shadow rounded m-1 g-1">
         {% include 'counters/partials/summary_per_month_table.html' %}
     </div>
     {% endwith %}

@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, DateField, DecimalField
 from django.forms.widgets import DateInput
 from .models import Reading, Counter
 
@@ -6,7 +6,7 @@ from .models import Reading, Counter
 class ReadingForm(ModelForm):
     class Meta:
         model = Reading
-        fields = ('counter', 'date', 'value')
+        fields = "__all__"
 
         widgets = {
             'date': DateInput(attrs={"type": "date"}),
@@ -20,6 +20,9 @@ class ReadingForm(ModelForm):
 
 
 class CounterForm(ModelForm):
+    initial_date = DateField(widget=DateInput(attrs={"type": "date"}))
+    initial_reading_value = DecimalField()
+
     class Meta:
         model = Counter
-        fields = ('title', 'consumable', 'unit', 'price_per_unit', 'fixed_price')
+        exclude = ["user"]
