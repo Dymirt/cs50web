@@ -1,14 +1,12 @@
-<div class="card border-0">
+<div class="card border-0 shadow rounded">
     <div class="card-body">
         <h5 class="card-title">{{ counter.title }}</h5>
         <table class="table table-hover">
             <thead>
             <tr>
                 <th>Month</th>
-                {% if counter.consumable %}
-                <th>Reading value</th>
+                <th>Reading</th>
                 <th>Consumption</th>
-                {% endif %}
                 <th>Payment</th>
             </tr>
             </thead>
@@ -27,20 +25,5 @@
             {% endfor %}
             </tr>
         </table>
-            <form class="row row-cols-lg-auto g-3 align-items-center">
-                <div class="col-12">
-                    <div class="input-group">
-                        <input type="date" class="form-control" id="inlineFormInputGroupUsername">
-                    </div>
-                </div>
-                <div class="col-12">
-                    <input type="number" step="0.01" class="form-control" aria-label="Amount (to the nearest dollar)"
-                           placeholder="Reading value">
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Add reading</button>
-                </div>
-
-            </form>
     </div>
 </div>

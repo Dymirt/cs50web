@@ -19,10 +19,12 @@ class ReadingForm(ModelForm):
             self.fields['counter'].queryset = Counter.objects.filter(user=user)
 
 
-class CounterForm(ModelForm):
-    initial_date = DateField(widget=DateInput(attrs={"type": "date"}))
-    initial_reading_value = DecimalField()
-
+class UpdateCounterForm(ModelForm):
     class Meta:
         model = Counter
         exclude = ["user"]
+
+
+class AddCounterForm(UpdateCounterForm):
+    initial_date = DateField(widget=DateInput(attrs={"type": "date"}))
+    initial_reading_value = DecimalField()
