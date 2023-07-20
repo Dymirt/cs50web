@@ -6,8 +6,33 @@
     <div class="col-auto  m-1 g-1">
         {% include 'counters/partials/summary_per_month_table.html' %}
     </div>
-    {% endwith %}
-
+        {% endwith %}
     {% endfor %}
+    <div class="col-auto  m-1 g-1">
+        <div class="card border-0 shadow rounded">
+            <div class="card-body">
+        <h5 class="card-title">Calculate Payment</h5>
+
+    <form>
+        <div class="form-floating mb-3">
+          <input type="date" class="form-control" id="date" placeholder="name@example.com">
+          <label for="date">{{ counter.title }}</label>
+        </div>
+    {% for object in object_list %}
+    {% with counter=object %}
+        <div class="form-floating mb-3">
+          <input type="number" class="form-control" id="{{ counter.title }}" placeholder="name@example.com">
+          <label for="{{ counter.title }}">{{ counter.title }}</label>
+        </div>
+
+    {% endwith %}
+    {% endfor %}
+          <div class="col-12">
+    <button class="btn btn-primary" type="submit">Submit form</button>
+  </div>
+    </form>
+    </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
