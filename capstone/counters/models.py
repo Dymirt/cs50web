@@ -44,7 +44,3 @@ class Reading(models.Model):
             return self.counter.fixed_price
 
 
-"""class Payment(models.Model):
-    counter = models.ForeignKey("Counter", related_name="readings", on_delete=models.CASCADE)
-    date = models.DateField()
-    value = models.DecimalField(max_digits=5, decimal_places=2, default=0)"""

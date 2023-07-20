@@ -1,38 +1,62 @@
 {% extends "counters/dashboard.html" %}
 {% block data %}
 <div class="row justify-content-between">
-    {% for object in object_list %}
-    {% with counter=object %}
-    <div class="col-auto  m-1 g-1">
-        {% include 'counters/partials/summary_per_month_table.html' %}
-    </div>
-        {% endwith %}
-    {% endfor %}
-    <div class="col-auto  m-1 g-1">
+    <div class="col m-1">
         <div class="card border-0 shadow rounded">
             <div class="card-body">
-        <h5 class="card-title">Calculate Payment</h5>
+                <h5 class="card-title">Latest Payments</h5>
 
-    <form>
-        <div class="form-floating mb-3">
-          <input type="date" class="form-control" id="date" placeholder="name@example.com">
-          <label for="date">{{ counter.title }}</label>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">{{ user.counters.first.readings.first.date }}</th>
+                        <th scope="col">{{ user.counters.first.readings.first.get_previous_reading.date }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for object in object_list %}
+                    {% with counter=object %}
+                    <tr>
+                        <th scope="row"><a href="{% url 'counters:counter-detail' counter.id %}">{{ counter.title }}</a></th>
+                        <td>{{ counter.readings.first.payment }}</td>
+                        <td>{{ counter.readings.first.get_previous_reading.payment }}</td>
+                    </tr>
+                    {% endwith %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    {% for object in object_list %}
-    {% with counter=object %}
-        <div class="form-floating mb-3">
-          <input type="number" class="form-control" id="{{ counter.title }}" placeholder="name@example.com">
-          <label for="{{ counter.title }}">{{ counter.title }}</label>
-        </div>
+    </div>
+    <div class="col m-1">
+        <div class="card border-0 shadow rounded">
+            <div class="card-body">
+                <h5 class="card-title">Calculate Payment</h5>
 
-    {% endwith %}
-    {% endfor %}
-          <div class="col-12">
-    <button class="btn btn-primary" type="submit">Submit form</button>
-  </div>
-    </form>
-    </div>
+                <form>
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="date" placeholder="name@example.com">
+                        <label for="date">{{ counter.title }}</label>
+                    </div>
+                    {% for object in object_list %}
+                    {% with counter=object %}
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="{{ counter.title }}"
+                               placeholder="name@example.com">
+                        <label for="{{ counter.title }}">{{ counter.title }}</label>
+                    </div>
+
+                    {% endwith %}
+                    {% endfor %}
+                    <div class="col-12">
+                        <button class="btn btn-primary" type="submit">Submit form</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+
 </div>
+
 {% endblock %}
