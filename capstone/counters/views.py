@@ -1,30 +1,87 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, UpdateView
-from django.views.generic import CreateView
-from .forms import ReadingForm, AddCounterForm, UpdateCounterForm
+from datetime import datetime
+from types import NoneType
 
+from django.db import IntegrityError
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, DetailView, UpdateView, View, CreateView
+from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import (
+    HttpResponse,
+    HttpResponseRedirect,
+    JsonResponse,
+    HttpResponseForbidden,
+    HttpResponseBadRequest,
+)
+from django.contrib.auth import get_user_model
+
+from .forms import ReadingForm, AddCounterForm, UpdateCounterForm
 from .models import Counter, Reading
 
-
-class CounterListView(ListView):
-    model = Counter
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.filter(user=self.request.user)
-        return queryset
+from django.db.models import OuterRef, Subquery, Max
 
 
-class ReadingListView(ListView):
-    model = Reading
-    template_name = "counters/reading_list.html"
-    paginate_by = 10
+def index_view(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("counters:dashboard"))
+    else:
+        return render(request, "counters/index.html")
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.filter(counter__user=self.request.user)
-        return queryset
+
+def login_view(request):
+    if request.method == "POST":
+        # Attempt to sign user in
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+
+        # Check if authentication successful
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse("counters:dashboard"))
+        else:
+            return render(
+                request,
+                "counters/login.html",
+                {"message": "Invalid username and/or password."},
+            )
+    else:
+        return render(request, "counters/login.html")
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("counters:login"))
+
+
+def register(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        email = request.POST["email"]
+
+        # Ensure password matches confirmation
+        password = request.POST["password"]
+        confirmation = request.POST["confirmation"]
+        if password != confirmation:
+            return render(
+                request, "counters/register.html", {"message": "Passwords must match."}
+            )
+
+        # Attempt to create new user
+        try:
+            user = get_user_model().objects.create_user(username, email, password)
+            user.save()
+        except IntegrityError:
+            return render(
+                request,
+                "counters/register.html",
+                {"message": "Username already taken."},
+            )
+        login(request, user)
+        return HttpResponseRedirect(reverse("counters:dashboard"))
+    else:
+        return render(request, "counters/register.html")
 
 
 class CounterDetailView(DetailView):
@@ -36,34 +93,10 @@ class CounterDetailView(DetailView):
         return queryset
 
 
-class AddCounterReading(CreateView):
-    template_name = "counters/generic_update.html"
-    form_class = ReadingForm
-    success_url = reverse_lazy("counters:readings-list")
-
-    def form_valid(self, form):
-        if form.is_valid():
-            form_counter = form.cleaned_data['counter']
-            form_reading_date = form.cleaned_data['date']
-            if form_counter in self.request.user.counters.all():
-                if form_counter.readings.exists() and form_counter.readings.count() >= 2:
-                    latest_reading = form_counter.readings.latest('pk')
-                    if latest_reading.date.month == form_reading_date.month:
-                        latest_reading.delete()
-                return super().form_valid(form)
-
-        return self.form_invalid(form)
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user  # Pass the user object to the form
-        return kwargs
-
-
 class AddCounter(LoginRequiredMixin, CreateView):
     form_class = AddCounterForm
     template_name = "counters/generic_update.html"
-    success_url = reverse_lazy("counters:counters-list")
+    success_url = reverse_lazy("counters:dashboard")
 
     def form_valid(self, form):
         if form.is_valid():
@@ -71,9 +104,11 @@ class AddCounter(LoginRequiredMixin, CreateView):
             response = super().form_valid(form)
 
             # Get the counter by its name
-            counter_name = form.cleaned_data['title']
+            counter_name = form.cleaned_data["title"]
             try:
-                counter = Counter.objects.get(user=self.request.user, title=counter_name)
+                counter = Counter.objects.get(
+                    user=self.request.user, title=counter_name
+                )
             except Counter.DoesNotExist:
                 # Handle the case when the counter with the given name doesn't exist
                 # (e.g., show an error message or redirect to an error page)
@@ -81,8 +116,9 @@ class AddCounter(LoginRequiredMixin, CreateView):
 
             Reading.objects.create(
                 counter=counter,
-                date=form.cleaned_data['initial_date'],
-                value=form.cleaned_data['initial_reading_value'])
+                date=form.cleaned_data["initial_date"],
+                value=form.cleaned_data["initial_reading_value"],
+            )
             return response
         return self.form_invalid(form)
 
@@ -96,27 +132,56 @@ class SummaryView(ListView):
         queryset = queryset.filter(user=self.request.user)
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        latest_reading_date = latest_reading_date_for_user_counters(self.request.user)
+        if latest_reading_date:
+            context['latest_reading_date'] = latest_reading_date.strftime('%Y-%m-%d')
+        context["counter_form"] = AddCounterForm()
+        return context
+
+
+def latest_reading_date_for_user_counters(user):
+    return Reading.objects.filter(counter__user=user)\
+        .aggregate(latest_date=Max('date'))['latest_date']
+
+
+class AddReadings(View):
+    def post(self, request):
+        readings_date = datetime.strptime(request.POST.get("date"), "%Y-%m-%d")
+        for counter in request.user.counters.all():
+            if counter.readings.exists() and counter.readings.count() >= 2:
+                latest_reading = counter.readings.latest("pk")
+                if latest_reading.date.month == readings_date.month:
+                    latest_reading.delete()
+            Reading.objects.create(
+                counter=counter,
+                date=readings_date,
+                value=request.POST.get(counter.title),
+            )
+        return redirect(reverse_lazy("counters:dashboard"))
+
 
 class CounterUpdateView(UpdateView):
     form_class = UpdateCounterForm
-    success_url = reverse_lazy("counters:readings-list")
     template_name = "counters/generic_update.html"
 
     def get_queryset(self):
         return Counter.objects.filter(user=self.request.user)
 
+    def get_success_url(self):
+        return reverse_lazy("counters:counter-detail", kwargs={'pk': self.object.pk})
+
 
 class ReadingUpdateView(UpdateView):
     form_class = ReadingForm
-    success_url = reverse_lazy("counters:readings-list")
+    success_url = reverse_lazy("counters:dashboard")
     template_name = "counters/generic_update.html"
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields.pop('counter')  # Remove the 'counter' field from the form
+        form.fields.pop("counter")  # Remove the 'counter' field from the form
         return form
 
     def get_queryset(self):
         return Reading.objects.filter(counter__user=self.request.user)
-
-
