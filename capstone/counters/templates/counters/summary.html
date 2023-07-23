@@ -1,62 +1,56 @@
 {% extends "counters/dashboard.html" %}
 {% block data %}
-<div class="row justify-content-between">
-    <div class="col m-1">
+{% with counters=object_list%}
+<div class="row my-2">
+    {% if counters %}
+    <div class="col-auto">
         <div class="card border-0 shadow rounded">
             <div class="card-body">
                 <h5 class="card-title">Latest Payments</h5>
-
                 <table class="table">
                     <thead>
                     <tr>
                         <th scope="col"></th>
-                        <th scope="col">{{ user.counters.first.readings.first.date }}</th>
                         <th scope="col">{{ user.counters.first.readings.first.get_previous_reading.date }}</th>
+                        <th scope="col">{{ user.counters.first.readings.first.date }}</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for object in object_list %}
-                    {% with counter=object %}
+                    {% for counter in counters %}
                     <tr>
                         <th scope="row"><a href="{% url 'counters:counter-detail' counter.id %}">{{ counter.title }}</a></th>
-                        <td>{{ counter.readings.first.payment }}</td>
-                        <td>{{ counter.readings.first.get_previous_reading.payment }}</td>
+                        <td>
+                            {% if counter.readings.first.get_previous_reading.payment %}
+                            {{ counter.readings.first.get_previous_reading.payment }} zł
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
+                        <td>{{ counter.readings.first.payment }} zł</td>
                     </tr>
-                    {% endwith %}
                     {% endfor %}
                     </tbody>
                 </table>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    {% include 'counters/partials/readings_add_modal.html' %}
+                </div>
             </div>
         </div>
     </div>
-    <div class="col m-1">
+    {% endif %}
+
+    <div class="col-auto">
         <div class="card border-0 shadow rounded">
             <div class="card-body">
-                <h5 class="card-title">Calculate Payment</h5>
-
-                <form>
-                    <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="date" placeholder="name@example.com">
-                        <label for="date">{{ counter.title }}</label>
-                    </div>
-                    {% for object in object_list %}
-                    {% with counter=object %}
-                    <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="{{ counter.title }}"
-                               placeholder="name@example.com">
-                        <label for="{{ counter.title }}">{{ counter.title }}</label>
-                    </div>
-
-                    {% endwith %}
-                    {% endfor %}
-                    <div class="col-12">
-                        <button class="btn btn-primary" type="submit">Submit form</button>
-                    </div>
-                </form>
+                    {% include 'counters/partials/counters_table.html' %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'counters:counter-add' %}" class='button'>
+                        <button type="button" class="btn btn-primary">Add Counter</button>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-
 </div>
-
+{% endwith %}
 {% endblock %}

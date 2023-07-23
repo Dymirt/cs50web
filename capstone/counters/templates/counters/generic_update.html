@@ -1,8 +1,18 @@
 {% extends "counters/dashboard.html" %}
 {% block data %}
+<div class="row m-2">
+    <div class="col-auto">
+        <div class="card border-0 shadow rounded">
+            <div class="card-body">
     <form method="post" action="">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">save</button>
     </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 {% endblock %}

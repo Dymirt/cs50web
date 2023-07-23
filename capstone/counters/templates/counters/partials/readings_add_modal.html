@@ -1,0 +1,39 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add readings
+</button>
+
+<!-- Modal -->
+<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{% url 'counters:readings-add' %}">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Calculate payments</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="card-title"></h5>
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <input required type="date" class="form-control" id="date" name="date" min="{{ latest_reading_date }}">
+                    </div>
+                    {% for object in object_list %}
+                    {% with counter=object %}
+                    <div class="form-floating mb-3">
+                        <input required type="number" step="0.01" class="form-control" name="{{ counter.title }}"
+                               id="{{ counter.title }}">
+                        <label for="{{ counter.title }}">{{ counter.title }}</label>
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,46 +1,31 @@
-<div class="card border-0">
-    <div class="card-body">
-        {% if object_list %}
-        <h5 class="card-title">Counters</h5>
-        <table class='table table-hover'>
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Price per unit</th>
-                <th>Unit</th>
-                <th>Monthly payment</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for obj in object_list %}
-            <tr>
-                <td>
-                    {% if "detail" in request.path %}
-                    {{ obj.title }}
-                    {% else %}
-                    <a href="{% url 'counters:counter-detail' obj.id %}">{{ obj.title }}</a>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if obj.price_per_unit %}{{ obj.price_per_unit }} zł{% endif %}
-                </td>
-                <td>
-                    {% if obj.unit %}{{ obj.unit }}{% endif %}
-                </td>
-                <td>
-                    {% if obj.fixed_price %}{{ obj.fixed_price }} zł{% endif %}
-                </td>
-                <td>
-                    <a href="{% url 'counters:counter-edit' obj.id %}">edit</a>
-                    <a href="{% url 'counters:counter-delete' obj.id %}">delete</a>
-                </td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <h5 class="card-title">No counters for now...</h5>
-        {% endif %}
-    </div>
-</div>
+{% if counters %}
+<h5 class="card-title">Counters</h5>
+<table class='table table-hover'>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Price per unit</th>
+        <th>Fixed price</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for counter in counters %}
+    <tr>
+        <td>
+            <a href="{% url 'counters:counter-detail' counter.id %}">{{ counter.title }}</a>
+        </td>
+        <td>
+            {% if counter.price_per_unit %}
+            {{ counter.price_per_unit }} zł/{{ counter.unit }}{% endif %}
+        </td>
+        <td>
+            {% if counter.fixed_price %}{{ counter.fixed_price }} zł{% endif %}
+        </td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h5 class="card-title">No counters for now...</h5>
+{% endif %}

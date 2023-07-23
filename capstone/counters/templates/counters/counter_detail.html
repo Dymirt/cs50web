@@ -1,11 +1,22 @@
 {% extends "counters/dashboard.html" %}
 {% block data %}
-    <h1>{{ object.title }}</h1>
-    <p>Unit: {{ object.unit }}</p>
-    <p>Price per {{ object.unit }}: {{ object.price_per_unit }}</p>
-    <p>Price per month: {{ object.fixed_price }}</p>
-    {% with object_list=object.readings.all %}
-        {% include 'counters/partials/readings_table.html' %}
-    {% endwith %}
-    {% include 'counters/partials/summary_per_month_table.html' %}
+        <div class="card border-0 shadow rounded">
+            <div class="card-body">
+                {% with counter=object %}
+                <h5 class="card-title">{{ counter.title }}</h5>
+                <p>Unit: {{ counter.unit }}</p>
+                <p>Price per {{ counter.unit }}: {{ counter.price_per_unit }}</p>
+                <p>Price per month: {{ counter.fixed_price }}</p>
+                    <a href="{% url 'counters:counter-edit' counter.id %}">edit</a>
+                    <a href="{% url 'counters:counter-delete' counter.id %}">delete</a>
+                <div class="row my-5">
+                    <div class="col">
+                        {% with readings=counter.readings.all %}
+                        {% include 'counters/partials/readings_table.html' %}
+                        {% endwith %}
+                    </div>
+                </div>
+                    {% endwith %}
+            </div>
+        </div>
 {% endblock %}
