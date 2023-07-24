@@ -58,11 +58,21 @@ def logout_view(request):
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
+        if not username:
+            return render(
+                request, "counters/register.html", {"message": "Username is required"}
+            )
+
         email = request.POST["email"]
 
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
+        if len(password) < 8:
+            return render(
+                request, "counters/register.html", {"message": "Passwords must contain at least 8 characters."}
+            )
+
         if password != confirmation:
             return render(
                 request, "counters/register.html", {"message": "Passwords must match."}
