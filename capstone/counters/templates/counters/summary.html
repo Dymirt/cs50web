@@ -1,9 +1,9 @@
 {% extends "counters/dashboard.html" %}
 {% block data %}
 {% with counters=object_list%}
-<div class="row my-2">
+<div class="row m-2 g-2">
     {% if counters %}
-    <div class="col-auto">
+    <div class="col-sm-12 col-lg-6">
         <div class="card border-0 shadow rounded">
             <div class="card-body">
                 <h5 class="card-title">Latest Payments</h5>
@@ -18,7 +18,8 @@
                     <tbody>
                     {% for counter in counters %}
                     <tr>
-                        <th scope="row"><a href="{% url 'counters:counter-detail' counter.id %}">{{ counter.title }}</a></th>
+                        <th scope="row"><a href="{% url 'counters:counter-detail' counter.id %}">{{ counter.title }}</a>
+                        </th>
                         <td>
                             {% if counter.readings.first.get_previous_reading.payment %}
                             {{ counter.readings.first.get_previous_reading.payment }} zł
@@ -39,14 +40,12 @@
     </div>
     {% endif %}
 
-    <div class="col-auto">
+    <div class="col-sm-12 col-lg-6">
         <div class="card border-0 shadow rounded">
             <div class="card-body">
-                    {% include 'counters/partials/counters_table.html' %}
+                {% include 'counters/partials/counters_table.html' %}
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a href="{% url 'counters:counter-add' %}" class='button'>
-                        <button type="button" class="btn btn-primary">Add Counter</button>
-                    </a>
+                        <button type="button" onclick="location.href='{% url 'counters:counter-add' %}';" class="btn btn-primary">Add Counter</button>
                 </div>
             </div>
         </div>
