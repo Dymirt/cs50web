@@ -178,6 +178,8 @@ class AddReadings(View):
         for counter in request.user.counters.all():
             if counter.readings.exists() and counter.readings.count() >= 2:
                 latest_reading = counter.readings.latest("pk")
+                if float(latest_reading.value) > float(request.POST.get(counter.title)):
+                    return HttpResponseBadRequest()
                 if latest_reading.date.month == readings_date.month:
                     latest_reading.delete()
             Reading.objects.create(

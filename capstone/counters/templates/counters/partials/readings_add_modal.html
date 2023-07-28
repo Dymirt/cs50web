@@ -22,7 +22,7 @@
                     {% with counter=object %}
                     <div class="form-floating mb-3">
                         <input required type="number" step="0.01" class="form-control" name="{{ counter.title }}"
-                               id="{{ counter.title }}">
+                               id="{{ counter.title }}" min="{{ counter.readings.first.value }}">
                         <label for="{{ counter.title }}">{{ counter.title }}</label>
                     </div>
                     {% endwith %}
