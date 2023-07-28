@@ -1,22 +1,70 @@
 {% extends "counters/dashboard.html" %}
+{% load custom_tags %}
+
 {% block data %}
-        <div class="card border-0 shadow rounded">
-            <div class="card-body">
-                {% with counter=object %}
-                <h5 class="card-title">{{ counter.title }}</h5>
-                <p>Unit: {{ counter.unit }}</p>
-                <p>Price per {{ counter.unit }}: {{ counter.price_per_unit }}</p>
-                <p>Price per month: {{ counter.fixed_price }}</p>
-                    <a href="{% url 'counters:counter-edit' counter.id %}">edit</a>
-                    <a href="{% url 'counters:counter-delete' counter.id %}">delete</a>
-                <div class="row my-5">
-                    <div class="col">
-                        {% with readings=counter.readings.all %}
-                        {% include 'counters/partials/readings_table.html' %}
-                        {% endwith %}
-                    </div>
+<div class="card border-0 shadow rounded">
+    <div class="card-body">
+        {% with counter=object %}
+        <h5 class="card-title">{{ counter.title }}</h5>
+        <p>Unit: {{ counter.unit }}</p>
+        <p>Price per {{ counter.unit }}: {{ counter.price_per_unit }}</p>
+        <p>Price per month: {{ counter.fixed_price }}</p>
+        <a href="{% url 'counters:counter-edit' counter.id %}">edit</a>
+        <a href="{% url 'counters:counter-delete' counter.id %}">delete</a>
+        <div class="row my-5">
+            <div class="col">
+                {% with readings=counter.readings.all %}
+                {% include 'counters/partials/readings_table.html' %}
+                {% endwith %}
+            </div>
+            <div class="col">
+            <div class="card border-0 shadow rounded">
+                <div class="card-body">
+                    <h6 class="mb-0 ">Usage per month</h6>
+                        <div class="chart">
+                            <canvas id="chart-usage" class="chart-canvas"></canvas>
+                        </div>
                 </div>
-                    {% endwith %}
             </div>
         </div>
+        </div>
+
+
+        <div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+var ctx = document.getElementById("chart-usage");
+var readings_month = {{ readings_month|as_json|safe }};
+var readings_usage = {{ readings_usage|as_json }};
+
+console.log(readings_month);
+console.log(readings_usage);
+
+    new Chart(ctx, {
+      type: "line",
+        data: {
+        labels: readings_month,
+        datasets: [{
+          label: "Usage",
+          backgroundColor: "transparent",
+          data: readings_usage,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          }
+        },
+      },
+    });
+
+        </script>
+        {% endwith %}
+    </div>
+</div>
 {% endblock %}

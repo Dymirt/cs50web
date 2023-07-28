@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from types import NoneType
 
@@ -101,6 +102,21 @@ class CounterDetailView(DetailView):
         queryset = super().get_queryset()
         queryset = queryset.filter(user=self.request.user)
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        counter = context['object']
+        readings = Reading.objects.filter(counter=counter).order_by('date')
+        readings_month = []
+        readings_usage = []
+        for reading in readings:
+            readings_month.append(reading.date.strftime('%b'))
+            readings_usage.append(reading.usage_in_units())
+
+        context['readings_month'] = readings_month
+        context['readings_usage'] = readings_usage
+
+        return context
 
 
 class AddCounter(LoginRequiredMixin, CreateView):

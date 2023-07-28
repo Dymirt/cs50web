@@ -35,6 +35,8 @@ class Reading(models.Model):
         previous_reading = self.get_previous_reading()
         if previous_reading:
             return float(self.value) - float(previous_reading.value)
+        else:
+            return 0
 
     def payment(self):
         if self.get_previous_reading():
