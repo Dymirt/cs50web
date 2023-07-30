@@ -275,17 +275,3 @@ class CounterUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("counters:counter-detail", kwargs={"pk": self.object.pk})
-
-
-class ReadingUpdateView(UpdateView):
-    form_class = ReadingForm
-    success_url = reverse_lazy("counters:dashboard")
-    template_name = "counters/generic_update.html"
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.fields.pop("counter")  # Remove the 'counter' field from the form
-        return form
-
-    def get_queryset(self):
-        return Reading.objects.filter(counter__user=self.request.user)

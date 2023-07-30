@@ -8,7 +8,6 @@ from .views import (
     SummaryView,
     AddCounter,
     CounterUpdateView,
-    ReadingUpdateView,
     login_view,
     logout_view,
     register,
@@ -40,7 +39,6 @@ urlpatterns = [
     ),
     # Reading urls
     path("readings/add", add_readings, name="readings-add"),
-    path("reading/<int:pk>/edit/", ReadingUpdateView.as_view(), name="reading-edit"),
     path(
         "reading/<int:pk>/delete/",
         login_required(

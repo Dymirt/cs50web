@@ -13,15 +13,11 @@ counter details, recording readings, and calculating accurate monthly payments b
 - Multiple Counter Types: Add and manage different types of home counters, including hot-water, electricity, gas,
   cold-water, and more. The application is designed to be flexible and allows users to customize counter types to their
   specific needs.
-- Initial Monthly Payments: Set the initial monthly payment required for each counter. This feature enables users to
-  manage their budgets effectively and ensures timely payments.
 - Payment per-Unit Consumption: Specify the price per-unit consumption (e.g., kWh, m3) for each counter. The application
   automatically calculates the total payment based on the consumed units, ensuring accurate billing.
 - Usage Monitoring and Trend Analysis: Record readings for each counter periodically, and the application tracks and
   displays consumption patterns over time. Users can analyze usage trends and identify any inefficiencies or unusual
   patterns.
-- Flexible Editing: Users have the flexibility to edit counter details and reading values separately. Updating counter
-  information does not impact historical readings, providing a seamless user experience.
 
 ## Project Complexity and Distinctiveness
 
