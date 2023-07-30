@@ -19,14 +19,14 @@
                 <td>{{ reading.date }}</td>
                 <td>{{ reading.value }} {{ reading.counter.unit }}</td>
 
-                {% if reading.usage_in_units %}
-                <td>{{ reading.usage_in_units|floatformat:2 }} {{ counter.unit }}</td>
+                {% if reading %}
+                <td>{{ reading.usage|floatformat:2 }} {{ counter.unit }}</td>
                 {% else %}
                 <td>-</td>
                 {% endif %}
 
                 {% if reading.payment %}
-                <td>{{ reading.payment|floatformat:2 }} zł</td>
+                <td>{{ reading.payment.amount|floatformat:2 }} zł</td>
                 {% else %}
                 <td>-</td>
                 {% endif %}

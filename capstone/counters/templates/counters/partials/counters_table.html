@@ -15,11 +15,11 @@
             <a href="{% url 'counters:counter-detail' counter.id %}">{{ counter.title }}</a>
         </td>
         <td>
-            {% if counter.price_per_unit %}
-            {{ counter.price_per_unit }} zł/{{ counter.unit }}{% endif %}
+            {% if counter.prices.last.price_per_unit %}
+            {{ counter.prices.last.price_per_unit }} zł/{{ counter.unit }}{% endif %}
         </td>
         <td>
-            {% if counter.fixed_price %}{{ counter.fixed_price }} zł{% endif %}
+            {% if counter.prices.last.price_per_month %}{{ counter.prices.last.price_per_month }} zł{% endif %}
         </td>
 
     </tr>

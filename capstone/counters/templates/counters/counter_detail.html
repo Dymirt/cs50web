@@ -7,31 +7,33 @@
         {% with counter=object %}
         <h5 class="card-title">{{ counter.title }}</h5>
         <p>Unit: {{ counter.unit }}</p>
-        <p>Price per {{ counter.unit }}: {{ counter.price_per_unit }}</p>
-        <p>Price per month: {{ counter.fixed_price }}</p>
+        <p>Price per {{ counter.unit }}: {{ counter.prices.last.price_per_unit }}</p>
+        <p>Price per month: {{ counter.prices.last.price_per_month }}</p>
         <a href="{% url 'counters:counter-edit' counter.id %}">edit</a>
         <a href="{% url 'counters:counter-delete' counter.id %}">delete</a>
         <div class="row my-5">
-            <div class="col">
+
+            <div class="col-12">
+                <div class="card border-0 shadow rounded">
+                    <div class="card-body">
+                        <h6 class="mb-0 ">Usage per month</h6>
+                        <div class="chart">
+                            <canvas id="chart-usage" class="chart-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
                 {% with readings=counter.readings.all %}
                 {% include 'counters/partials/readings_table.html' %}
                 {% endwith %}
             </div>
-            <div class="col">
-            <div class="card border-0 shadow rounded">
-                <div class="card-body">
-                    <h6 class="mb-0 ">Usage per month</h6>
-                        <div class="chart">
-                            <canvas id="chart-usage" class="chart-canvas"></canvas>
-                        </div>
-                </div>
-            </div>
-        </div>
         </div>
 
 
         <div>
         </div>
+        {{ readings_month }}
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
@@ -62,6 +64,7 @@ console.log(readings_usage);
         },
       },
     });
+
 
         </script>
         {% endwith %}

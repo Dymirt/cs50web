@@ -9,11 +9,11 @@ from .views import (
     AddCounter,
     CounterUpdateView,
     ReadingUpdateView,
-    AddReadings,
     login_view,
     logout_view,
     register,
     index_view,
+    add_readings
 )
 
 app_name = "counters"
@@ -39,7 +39,7 @@ urlpatterns = [
         name="counter-delete",
     ),
     # Reading urls
-    path("readings/add", AddReadings.as_view(), name="readings-add"),
+    path("readings/add", add_readings, name="readings-add"),
     path("reading/<int:pk>/edit/", ReadingUpdateView.as_view(), name="reading-edit"),
     path(
         "reading/<int:pk>/delete/",

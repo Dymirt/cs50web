@@ -1,4 +1,5 @@
 {% extends "counters/dashboard.html" %}
+{% load custom_tags %}
 {% block data %}
 {% with counters=object_list%}
 <div class="row m-2 g-2">
@@ -10,26 +11,18 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col"></th>
-                        <th scope="col">{{ user.counters.first.readings.first.get_previous_reading.date }}</th>
-                        <th scope="col">{{ user.counters.first.readings.first.date }}</th>
+
                     </tr>
                     </thead>
                     <tbody>
-                    {% for counter in counters %}
-                    <tr>
-                        <th scope="row"><a href="{% url 'counters:counter-detail' counter.id %}">{{ counter.title }}</a>
-                        </th>
-                        <td>
-                            {% if counter.readings.first.get_previous_reading.payment %}
-                            {{ counter.readings.first.get_previous_reading.payment }} zł
-                            {% else %}
-                            -
-                            {% endif %}
-                        </td>
-                        <td>{{ counter.readings.first.payment }} zł</td>
-                    </tr>
-                    {% endfor %}
+
+                        {% for data in payments_per_month %}
+                        <tr scope="col">
+                            <th scope="col">{{ data.year }}</th>
+                            <th scope="col">{{ data.month|month_name }}</th>
+                            <td scope="col">{{ data.total_payment|floatformat:2 }}zł</td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
