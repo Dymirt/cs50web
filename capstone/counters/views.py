@@ -125,7 +125,6 @@ class CounterDetailView(DetailView):
             .values("month", "usage")
             .order_by("date")
         )
-        print(readings)
         readings_month = [calendar.month_name[reading.get("month")] for reading in readings]
         readings_usage = [float(reading.get('usage')) for reading in readings]
 
