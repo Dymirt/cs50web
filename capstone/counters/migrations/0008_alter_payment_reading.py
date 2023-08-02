@@ -5,15 +5,18 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('counters', '0007_remove_counter_fixed_price_and_more'),
+        ("counters", "0007_remove_counter_fixed_price_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='payment',
-            name='reading',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='payments', to='counters.reading'),
+            model_name="payment",
+            name="reading",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="payments",
+                to="counters.reading",
+            ),
         ),
     ]

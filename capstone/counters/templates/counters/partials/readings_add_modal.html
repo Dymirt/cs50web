@@ -16,7 +16,8 @@
                     <h5 class="card-title"></h5>
                     {% csrf_token %}
                     <div class="form-floating mb-3">
-                        <input required type="date" class="form-control" id="date" name="date" min="{{ latest_reading_date }}">
+                        <input required type="date" class="form-control" id="date" name="date"
+                               min="{{ latest_reading_date }}">
                     </div>
                     {% for object in object_list %}
                     {% with counter=object %}

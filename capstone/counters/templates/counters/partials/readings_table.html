@@ -3,18 +3,18 @@
         {% if readings %}
         <h5 class="card-title">Readings</h5>
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Value</th>
-            <th>Usage</th>
-            <th>Payment</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for reading in readings %}
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Value</th>
+                <th>Usage</th>
+                <th>Payment</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for reading in readings %}
             <tr>
                 <td>{{ reading.date }}</td>
                 <td>{{ reading.value }} {{ reading.counter.unit }}</td>
@@ -34,13 +34,13 @@
                     <a href="{% url 'counters:reading-delete' reading.id %}">delete</a>
                 </td>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
-    {% include 'counters/partials/pagination.html' %}
-    {% else %}
-    <h5 class="card-title">No readings for now...</h5>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% include 'counters/partials/pagination.html' %}
+        {% else %}
+        <h5 class="card-title">No readings for now...</h5>
 
-    {% endif %}
-</div>
+        {% endif %}
     </div>
+</div>

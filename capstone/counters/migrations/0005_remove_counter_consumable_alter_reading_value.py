@@ -4,19 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('counters', '0004_alter_counter_user'),
+        ("counters", "0004_alter_counter_user"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='counter',
-            name='consumable',
+            model_name="counter",
+            name="consumable",
         ),
         migrations.AlterField(
-            model_name='reading',
-            name='value',
+            model_name="reading",
+            name="value",
             field=models.DecimalField(blank=True, decimal_places=2, max_digits=10),
         ),
     ]

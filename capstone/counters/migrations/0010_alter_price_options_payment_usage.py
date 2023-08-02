@@ -4,19 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('counters', '0009_alter_payment_reading'),
+        ("counters", "0009_alter_payment_reading"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='price',
-            options={'ordering': ('date',)},
+            name="price",
+            options={"ordering": ("date",)},
         ),
         migrations.AddField(
-            model_name='payment',
-            name='usage',
+            model_name="payment",
+            name="usage",
             field=models.DecimalField(decimal_places=2, default=0, max_digits=10),
             preserve_default=False,
         ),

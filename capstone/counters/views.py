@@ -125,11 +125,13 @@ class CounterDetailView(DetailView):
             .values("month", "usage")
             .order_by("date")
         )
-        readings_month = [calendar.month_name[reading.get("month")] for reading in readings]
-        readings_usage = [float(reading.get('usage')) for reading in readings]
+        readings_month = [
+            calendar.month_name[reading.get("month")] for reading in readings
+        ]
+        readings_usage = [float(reading.get("usage")) for reading in readings]
 
         context["readings_month"] = readings_month
-        context['readings_usage'] = readings_usage
+        context["readings_usage"] = readings_usage
         return context
 
 
@@ -202,7 +204,7 @@ class SummaryView(ListView):
         context["counter_form"] = AddCounterForm()
         context["payments_per_month"] = (
             Reading.objects.filter(counter__user=self.request.user, usage__gt=0)
-            .annotate(month=ExtractMonth("date"), year=ExtractYear('date'))
+            .annotate(month=ExtractMonth("date"), year=ExtractYear("date"))
             .values("month", "year")
             .annotate(total_payment=Sum("payment__amount"))
             .order_by("month")

@@ -9,10 +9,18 @@ class ReadingModelTest(TestCase):
         self.user = get_user_model().objects.create_user(
             username="testuser", email="test@example.com", password="testpassword"
         )
-        self.counter = Counter.objects.create(user=self.user, title="Test Counter", unit="units")
-        self.reading = Reading.objects.create(counter=self.counter, date=date(2023, 7, 1), value=10.0)
-        self.reading1 = Reading.objects.create(counter=self.counter, date=date(2023, 8, 1), value=20.0)
-        self.reading2 = Reading.objects.create(counter=self.counter, date=date(2023, 9, 1), value=40.0)
+        self.counter = Counter.objects.create(
+            user=self.user, title="Test Counter", unit="units"
+        )
+        self.reading = Reading.objects.create(
+            counter=self.counter, date=date(2023, 7, 1), value=10.0
+        )
+        self.reading1 = Reading.objects.create(
+            counter=self.counter, date=date(2023, 8, 1), value=20.0
+        )
+        self.reading2 = Reading.objects.create(
+            counter=self.counter, date=date(2023, 9, 1), value=40.0
+        )
 
     def test_reading_creation(self):
         self.assertEqual(self.reading.counter, self.counter)
@@ -28,4 +36,3 @@ class ReadingModelTest(TestCase):
         self.assertEqual(self.reading.usage, 0)
         self.assertEqual(self.reading1.usage, 10)
         self.assertEqual(self.reading2.usage, 20)
-

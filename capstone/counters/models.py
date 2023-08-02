@@ -25,9 +25,13 @@ class Reading(models.Model):
     usage = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def save(self, *args, **kwargs):
-        super(Reading, self).save(*args, **kwargs)  # Save the object first to get a valid pk
+        super(Reading, self).save(
+            *args, **kwargs
+        )  # Save the object first to get a valid pk
         self.usage = self.usage_in_units()  # Now calculate the usage using the valid pk
-        super(Reading, self).save(update_fields=['usage'])  # Save the object again with updated usage field
+        super(Reading, self).save(
+            update_fields=["usage"]
+        )  # Save the object again with updated usage field
 
     def __str__(self):
         return f"{self.counter.title} {self.value} on {self.date}"

@@ -9,20 +9,14 @@
             <div class="card-body">
                 <h5 class="card-title">Latest Payments</h5>
                 <table class="table">
-                    <thead>
-                    <tr>
-
-                    </tr>
-                    </thead>
                     <tbody>
-
-                        {% for data in payments_per_month %}
-                        <tr scope="col">
-                            <th scope="col">{{ data.year }}</th>
-                            <th scope="col">{{ data.month|month_name }}</th>
-                            <td scope="col">{{ data.total_payment|floatformat:2 }}zł</td>
-                        </tr>
-                        {% endfor %}
+                    {% for data in payments_per_month %}
+                    <tr scope="col">
+                        <th scope="col">{{ data.year }}</th>
+                        <th scope="col">{{ data.month|month_name }}</th>
+                        <td scope="col">{{ data.total_payment|floatformat:2 }}zł</td>
+                    </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -32,13 +26,14 @@
         </div>
     </div>
     {% endif %}
-
     <div class="col-sm-12 col-lg-6">
         <div class="card border-0 shadow rounded">
             <div class="card-body">
                 {% include 'counters/partials/counters_table.html' %}
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button type="button" onclick="location.href='{% url 'counters:counter-add' %}';" class="btn btn-primary">Add Counter</button>
+                    <button type="button" onclick="location.href='{% url 'counters:counter-add' %}';"
+                            class="btn btn-primary">Add Counter
+                    </button>
                 </div>
             </div>
         </div>

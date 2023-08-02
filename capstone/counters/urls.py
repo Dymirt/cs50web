@@ -12,7 +12,7 @@ from .views import (
     logout_view,
     register,
     index_view,
-    add_readings
+    add_readings,
 )
 
 app_name = "counters"
@@ -50,5 +50,4 @@ urlpatterns = [
         ),
         name="reading-delete",
     ),
-
 ]

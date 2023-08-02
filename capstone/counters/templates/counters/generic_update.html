@@ -4,13 +4,13 @@
     <div class="col-auto">
         <div class="card border-0 shadow rounded">
             <div class="card-body">
-    <form method="post" action="">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {{ price_form.as_p  }}
-        {{ reading_form.as_p  }}
-        <button type="submit">save</button>
-    </form>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    {{ price_form.as_p }}
+                    {{ reading_form.as_p }}
+                    <button type="submit">save</button>
+                </form>
             </div>
         </div>
     </div>

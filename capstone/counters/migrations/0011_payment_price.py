@@ -5,16 +5,20 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('counters', '0010_alter_price_options_payment_usage'),
+        ("counters", "0010_alter_price_options_payment_usage"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='payment',
-            name='price',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, related_name='payments', to='counters.price'),
+            model_name="payment",
+            name="price",
+            field=models.ForeignKey(
+                default=0,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="payments",
+                to="counters.price",
+            ),
             preserve_default=False,
         ),
     ]
