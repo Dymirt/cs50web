@@ -31,15 +31,3 @@ informed decisions about their usage patterns, and optimize their monthly expens
 
 I hope you find this Home Counters Management Application valuable in managing and monitoring your home counters
 effectively! Feel free to contribute, provide feedback, or report any issues you encounter. Happy tracking!
-
-The Home Counters Management Application serves as the capstone project for the CS50 Web Programming Course. It stands
-out due to its comprehensive set of features, such as customizable counter types, accurate payment calculations, usage
-monitoring, and separate editing options. The project's complexity lies in handling multiple counter scenarios and
-providing a user-friendly interface for tracking and managing home counters efficiently.
-
-Developed as part of the CS50 Web Programming Course, this application showcases the skills and knowledge gained
-throughout the course curriculum. It demonstrates a deep understanding of web development concepts, including Django,
-databases, user authentication, and dynamic user interfaces.
-
-We hope you find this Home Counters Management Application valuable in managing and monitoring your home counters
-effectively! Feel free to contribute, provide feedback, or report any issues you encounter. Happy tracking!

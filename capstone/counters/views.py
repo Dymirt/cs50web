@@ -1,7 +1,7 @@
 import calendar
 import json
 from datetime import datetime
-from types import NoneType
+# from types import NoneType
 
 from django.db import IntegrityError
 from django.urls import reverse_lazy, reverse
